@@ -1,5 +1,6 @@
 package dev.hv.model;
 
+
 import java.time.LocalDate;
 
 public interface IReading extends IId {
