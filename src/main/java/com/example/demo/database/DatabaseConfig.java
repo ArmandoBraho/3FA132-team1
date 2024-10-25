@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.database;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;

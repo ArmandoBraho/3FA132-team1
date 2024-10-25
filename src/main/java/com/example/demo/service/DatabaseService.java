@@ -24,6 +24,7 @@ public class DatabaseService {
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM people");
 
+            //todo:
             while (result.next()) {
                 // Process results
             }
