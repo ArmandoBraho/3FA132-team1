@@ -1,5 +1,6 @@
-package com.example.demo.service;
+package dev.hv.service;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,13 +26,12 @@ public class DatabaseService {
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM people");
 
-            //todo:
             while (result.next()) {
                 // Process results
             }
         }
 
-
+        
     }
 }
 
