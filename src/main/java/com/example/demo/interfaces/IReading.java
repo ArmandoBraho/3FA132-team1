@@ -1,16 +1,18 @@
-package dev.hv.model;
+package com.example.demo.interfaces;
+
+import com.example.demo.models.Customer;
 
 import java.time.LocalDate;
 
 public interface IReading extends IId {
 
    enum KindOfMeter {
-      HEIZUNG, STROM, UNBEKANNT, WASSER;
+      HEATING, ELECTRICITY, UNKNOWN, WATER
    }
 
    String getComment();
 
-   ICustomer getCustomer();
+   Customer getCustomer();
 
    LocalDate getDateOfReading();
 
@@ -26,7 +28,7 @@ public interface IReading extends IId {
 
    void setComment(String comment);
 
-   void setCustomer(ICustomer customer);
+   void setCustomer(Customer customer);
 
    void setDateOfReading(LocalDate dateOfReading);
 

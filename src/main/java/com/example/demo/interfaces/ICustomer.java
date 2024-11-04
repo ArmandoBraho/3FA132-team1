@@ -1,4 +1,4 @@
-package dev.hv.model;
+package com.example.demo.interfaces;
 
 import java.time.LocalDate;
 
@@ -19,7 +19,7 @@ public interface ICustomer extends IId {
 
    String getLastName();
 
-   void setBirthDate(LocalDate birtDate);
+   void setBirthDate(LocalDate birthDate);
 
    void setFirstName(String firstName);
 
