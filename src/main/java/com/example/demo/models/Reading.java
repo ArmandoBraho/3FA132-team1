@@ -7,7 +7,8 @@ import java.util.UUID;
 
 public class Reading implements IReading {
 
-    private UUID customerUUID;
+    private Customer customer;
+    private UUID id;
     private String meterId;
     private LocalDate dateOfReading;
     private Double meterCount;
@@ -15,8 +16,9 @@ public class Reading implements IReading {
     private KindOfMeter kindOfMeter;
     private Boolean substitute;
 
-    public Reading(UUID customerUUID, String meterId, LocalDate dateOfReading, Double meterCount, String comment, KindOfMeter kindOfMeter, Boolean substitute) {
-        this.customerUUID = customerUUID;
+    public Reading(Customer customer, UUID id, String meterId, LocalDate dateOfReading, Double meterCount, String comment, KindOfMeter kindOfMeter, Boolean substitute) {
+        this.customer = customer;
+        this.id = id;
         this.meterId = meterId;
         this.dateOfReading = dateOfReading;
         this.meterCount = meterCount;
@@ -25,14 +27,15 @@ public class Reading implements IReading {
         this.substitute = substitute;
     }
 
-    public UUID getCustomerUUID() {
-        return customerUUID;
+    @Override
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerUUID(UUID customerUUID) {
-        this.customerUUID = customerUUID;
+    @Override
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
-
     @Override
     public String getMeterId() {
         return meterId;
@@ -68,18 +71,8 @@ public class Reading implements IReading {
         return comment;
     }
 
-    @Override
-    public Customer getCustomer() {
-        return null;
-    }
-
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    @Override
-    public void setCustomer(Customer customer) {
-
     }
 
     @Override
@@ -107,7 +100,7 @@ public class Reading implements IReading {
 
     @Override
     public UUID getId() {
-        return null;
+        return id;
     }
 
     @Override
