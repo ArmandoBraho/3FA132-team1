@@ -4,11 +4,14 @@ package com.example.demo.database;
 import com.example.demo.interfaces.IReading;
 import com.example.demo.models.Customer;
 import com.example.demo.models.Reading;
+import com.example.demo.service.CustomerService;
+import com.example.demo.service.ReadingService;
 
 import java.io.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -17,6 +20,9 @@ import java.util.UUID;
 public class DatabaseInitialization {
 
     DatabaseConnection databaseConnection = new DatabaseConnection();
+    CustomerService customerService = new CustomerService(databaseConnection);
+        ReadingService readingService = new ReadingService(databaseConnection);
+
     Properties properties = new Properties();
 
 
@@ -29,6 +35,21 @@ public class DatabaseInitialization {
         initializeCustomersTable();
         databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
         initializeReadingsTable();
+
+        // todo: temporary solution to check if it works ----> tests   or  endpoint
+//        databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
+//        List<Customer> customers = customerService.getAllCustomers();
+//        databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
+//        List<Reading> readings = readingService.getAllReadings();
+
+//        not working atm
+//        Reading readingExample = new Reading( new Customer(UUID.fromString("f47b3b2b-3f3b-4b7b-8b3b-2b3f3b4b7b8b"), null, null, null, null), UUID.fromString("f47b3b2b-3f3b-4b7b-8b3b-2b3"), "123456", LocalDate.parse("2021-01-01"), 123.45, "aaaComment", IReading.KindOfMeter.ELECTRICITY, false);
+//        databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
+//        Reading readingBefore = readingService.getReadingById(UUID.fromString("f47b3b2b-3f3b-4b7b-8b3b-2b3f3b4b7b8b"));
+//        databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
+//        readingService.createReading(readingExample);
+//        databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
+//        Reading readingAfter = readingService.getReadingById(UUID.fromString("f47b3b2b-3f3b-4b7b-8b3b-2b3f3b4b7b8b"));
     }
 
     private void loadPropretiesFromApplicationProperties() {
@@ -90,6 +111,15 @@ public class DatabaseInitialization {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(";");
                 Reading reading = new Reading(
+                        // todo: ask teacher if it is what they wanted
+                        // what if there is no assigned custoemr??
+                        //todo: should be following row
+//                        customerService.getCustomerById(UUID.fromString(values[0])), //customer
+                        // the problem with the above implementation is that the connection needs to be open every time we want to get a customer by id through customerService
+                        new Customer(UUID.fromString(values[0]), null, null, null, null), //customer
+                        // it"s ok atm because we just use it to keep the customer_uuid reference, then in the getCustomer should be a request -----------------
+                        // --------------------------------------------------------------
+//                        RIPRENDI DA THIS ISSUE; MAKE CONNECTION POOL??
                         UUID.fromString(values[0]),  // customer_uuid
                         values[1],  // meter_id
                         new Date(new SimpleDateFormat("dd.MM.yyyy").parse(values[2]).getTime()).toLocalDate(),  // date_of_reading
@@ -104,13 +134,13 @@ public class DatabaseInitialization {
                 readings.add(reading);
             }
         } catch (IOException | RuntimeException | ParseException e) {
-            throw new RuntimeException("Error reading CSV file", e);
+            throw new RuntimeException("Error reading measurements from CSV file", e);
         }
     }
 
     private void insertCustomersToDB(List<Customer> customers) {
         String checkSQL = "SELECT COUNT(*) FROM customers";
-        String insertSQL = "INSERT INTO customers (uuid, gender, first_name, last_name, birth_date) VALUES (?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO customers (id, gender, first_name, last_name, birth_date) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = databaseConnection.getConnection();
              PreparedStatement checkStmt = conn.prepareStatement(checkSQL);
@@ -136,7 +166,7 @@ public class DatabaseInitialization {
 
     private void insertReadingsToDB(List<Reading> readings) {
         String checkSQL = "SELECT COUNT(*) FROM readings";
-        String insertSQL = "INSERT INTO readings (customer_uuid, meter_id, date_of_reading, meter_count, comment, kind_of_meter, substitute) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO readings (id, customer_id, meter_id, date_of_reading, meter_count, comment, kind_of_meter, substitute) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = databaseConnection.getConnection();
              PreparedStatement checkStmt = conn.prepareStatement(checkSQL);
@@ -145,13 +175,14 @@ public class DatabaseInitialization {
             rs.next();
             if (rs.getInt(1) == 0) { // If the table is empty
                 for (Reading reading : readings) {
-                    pstmt.setString(1, reading.getCustomerUUID().toString());
-                    pstmt.setString(2, reading.getMeterId());
-                    pstmt.setObject(3, reading.getDateOfReading());
-                    pstmt.setDouble(4, reading.getMeterCount());
-                    pstmt.setString(5, reading.getComment());
-                    pstmt.setString(6, reading.getKindOfMeter().toString());
-                    pstmt.setBoolean(7, reading.getSubstitute());
+                    pstmt.setString(1, UUID.randomUUID().toString());
+                    pstmt.setString(2, reading.getCustomer().getId().toString());
+                    pstmt.setString(3, reading.getMeterId());
+                    pstmt.setObject(4, reading.getDateOfReading());
+                    pstmt.setDouble(5, reading.getMeterCount());
+                    pstmt.setString(6, reading.getComment());
+                    pstmt.setString(7, reading.getKindOfMeter().toString());
+                    pstmt.setBoolean(8, reading.getSubstitute());
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();

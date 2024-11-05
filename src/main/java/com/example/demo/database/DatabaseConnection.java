@@ -42,7 +42,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     @Override
     public void createAllTables() {
         String createCustomersTableSQL = "CREATE TABLE IF NOT EXISTS customers (" +
-                "uuid CHAR(36)  PRIMARY KEY, " +
+                "id CHAR(36)  PRIMARY KEY, " +
                 "gender ENUM('D', 'M', 'U', 'W'), " +
                 "first_name VARCHAR(255), " +
                 "last_name VARCHAR(255), " +
@@ -50,8 +50,8 @@ public class DatabaseConnection implements IDatabaseConnection {
                 "creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                 ")";
         String createReadingsTableSQL = "CREATE TABLE IF NOT EXISTS readings (" +
-                "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                "customer_uuid CHAR(36), " +
+                "id CHAR(36) PRIMARY KEY, " +
+                "customer_id CHAR(36), " +
                 "meter_id VARCHAR(255), " +
                 "date_of_reading DATE, " +
                 "meter_count DOUBLE, " +
@@ -59,7 +59,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                 "kind_of_meter ENUM('ELECTRICITY', 'HEATING', 'WATER', 'UNKNOWN'), " +
                 "substitute BOOLEAN, " +
                 "creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
-                "FOREIGN KEY (customer_uuid) REFERENCES customers(uuid)" +
+                "FOREIGN KEY (customer_id) REFERENCES customers(id)" +
                 ")";
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createCustomersTableSQL);
@@ -71,10 +71,16 @@ public class DatabaseConnection implements IDatabaseConnection {
 
     @Override
     public void truncateAllTables() {
+        String disableForeignKeyChecks = "SET FOREIGN_KEY_CHECKS = 0";
+        String enableForeignKeyChecks = "SET FOREIGN_KEY_CHECKS = 1";
+        String setCustomerUuidToNull = "UPDATE readings SET customer_uuid = NULL";
         String truncateCustomersTableSQL = "TRUNCATE TABLE customers";
         String truncateReadingsTableSQL = "TRUNCATE TABLE readings";
         try (Statement stmt = connection.createStatement()) {
+            stmt.execute(disableForeignKeyChecks);
+            stmt.execute(setCustomerUuidToNull);
             stmt.execute(truncateCustomersTableSQL);
+            stmt.execute(enableForeignKeyChecks);
             stmt.execute(truncateReadingsTableSQL);
         } catch (SQLException e) {
             throw new RuntimeException("Error truncating tables", e);
