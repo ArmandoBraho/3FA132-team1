@@ -11,7 +11,6 @@ import java.io.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -21,20 +20,23 @@ public class DatabaseInitialization {
 
     DatabaseConnection databaseConnection = new DatabaseConnection();
     CustomerService customerService = new CustomerService(databaseConnection);
-        ReadingService readingService = new ReadingService(databaseConnection);
+    ReadingService readingService = new ReadingService(databaseConnection);
 
     Properties properties = new Properties();
 
 
     public void initialize() {
+        List<Customer> customers = new ArrayList<>();
+        List<Reading> readings = new ArrayList<>();
+
         loadPropretiesFromApplicationProperties();
         databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
         databaseConnection.removeAllTables();
         databaseConnection.createAllTables();
 
-        initializeCustomersTable();
+        initializeCustomersTable(customers);
         databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
-        initializeReadingsTable();
+        initializeReadingsTable(readings);
 
         // todo: temporary solution to check if it works ----> tests   or  endpoint
 //        databaseConnection = (DatabaseConnection) databaseConnection.openConnection(properties);
@@ -63,14 +65,12 @@ public class DatabaseInitialization {
         }
     }
 
-    private void initializeCustomersTable() {
-        List<Customer> customers = new ArrayList<>();
+    private void initializeCustomersTable(List<Customer> customers) {
         extractCustomersInformationsFromCSVFile(customers);
         insertCustomersToDB(customers);
     }
 
-    private void initializeReadingsTable() {
-        List<Reading> readings = new ArrayList<>();
+    private void initializeReadingsTable(List<Reading> readings) {
         final String ELECTRICITY_READINGS_CSV_FILE_PATH = "src/main/resources/database-csv-files/electricity.csv";
         final String HEATING_READINGS_CSV_FILE_PATH = "src/main/resources/database-csv-files/heating.csv";
         final String WATER_READINGS_CSV_FILE_PATH = "src/main/resources/database-csv-files/water.csv";
@@ -90,13 +90,13 @@ public class DatabaseInitialization {
             br.readLine(); // Skip the first line
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                Customer client = new Customer(
-                        UUID.fromString(values[0]),  // uuid
+                Customer customer = new Customer(
+                        UUID.fromString(values[0]),  // id
                         com.example.demo.interfaces.ICustomer.Gender.valueOf(values[1].equals("Herr") ? "M" : values[1].equals("Frau") ? "W" : values[1].equals("Divers") ? "D" : "U"),  // gender
                         values[2],  // first_name
                         values[3],   // last_name
                         values.length > 4 && !values[4].isEmpty() ? new Date(new SimpleDateFormat("dd.MM.yyyy").parse(values[4]).getTime()).toLocalDate() : null); // birth_date
-                customers.add(client);
+                customers.add(customer);
             }
         } catch (IOException | RuntimeException | ParseException e) {
             throw new RuntimeException("Error reading CSV file", e);
@@ -111,16 +111,9 @@ public class DatabaseInitialization {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(";");
                 Reading reading = new Reading(
-                        // todo: ask teacher if it is what they wanted
                         // what if there is no assigned custoemr??
-                        //todo: should be following row
-//                        customerService.getCustomerById(UUID.fromString(values[0])), //customer
-                        // the problem with the above implementation is that the connection needs to be open every time we want to get a customer by id through customerService
                         new Customer(UUID.fromString(values[0]), null, null, null, null), //customer
-                        // it"s ok atm because we just use it to keep the customer_uuid reference, then in the getCustomer should be a request -----------------
-                        // --------------------------------------------------------------
-//                        RIPRENDI DA THIS ISSUE; MAKE CONNECTION POOL??
-                        UUID.fromString(values[0]),  // customer_uuid
+                        UUID.fromString(values[0]),  // customer_id
                         values[1],  // meter_id
                         new Date(new SimpleDateFormat("dd.MM.yyyy").parse(values[2]).getTime()).toLocalDate(),  // date_of_reading
                         Double.valueOf(values[3].replace(",", ".")),  // meter_count
@@ -148,12 +141,12 @@ public class DatabaseInitialization {
             ResultSet rs = checkStmt.executeQuery();
             rs.next();
             if (rs.getInt(1) == 0) { // If the table is empty
-                for (Customer client : customers) {
-                    pstmt.setString(1, client.getId().toString());
-                    pstmt.setString(2, client.getGender().toString());
-                    pstmt.setString(3, client.getFirstName());
-                    pstmt.setString(4, client.getLastName());
-                    pstmt.setDate(5, client.getBirthDate() != null ? Date.valueOf(client.getBirthDate()) : null);
+                for (Customer customer : customers) {
+                    pstmt.setString(1, customer.getId().toString());
+                    pstmt.setString(2, customer.getGender().toString());
+                    pstmt.setString(3, customer.getFirstName());
+                    pstmt.setString(4, customer.getLastName());
+                    pstmt.setDate(5, customer.getBirthDate() != null ? Date.valueOf(customer.getBirthDate()) : null);
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();

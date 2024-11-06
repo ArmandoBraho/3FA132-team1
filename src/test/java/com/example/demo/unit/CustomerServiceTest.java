@@ -1,7 +1,8 @@
-package com.example.demo.service;
+package com.example.demo.unit;
 
 import com.example.demo.database.DatabaseConnection;
 import com.example.demo.models.Customer;
+import com.example.demo.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +46,7 @@ public class CustomerServiceTest {
     public void testGetAllCustomers() throws Exception {
         // Mock the ResultSet
         when(resultSet.next()).thenReturn(true, true, false);
-        when(resultSet.getString("uuid")).thenReturn(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        when(resultSet.getString("id")).thenReturn(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         when(resultSet.getString("gender")).thenReturn("M", "W");
         when(resultSet.getString("first_name")).thenReturn("John", "Jane");
         when(resultSet.getString("last_name")).thenReturn("Doe", "Doe");
@@ -68,7 +69,7 @@ public class CustomerServiceTest {
 
         // Mock the ResultSet
         when(resultSet.next()).thenReturn(true);
-        when(resultSet.getString("uuid")).thenReturn(customerId.toString());
+        when(resultSet.getString("id")).thenReturn(customerId.toString());
         when(resultSet.getString("gender")).thenReturn("M");
         when(resultSet.getString("first_name")).thenReturn("John");
         when(resultSet.getString("last_name")).thenReturn("Doe");

@@ -7,9 +7,8 @@ import java.util.UUID;
 
 public class Reading implements IReading {
 
-    // when wir readings ziehen dann tun wir durch customer_uuid ( defined in the database) das Customer initialisieren, but will the rest null or make request?
-    private Customer customer;
     private UUID id;
+    private Customer customer;
     private String meterId;
     private LocalDate dateOfReading;
     private Double meterCount;
@@ -30,13 +29,11 @@ public class Reading implements IReading {
 
     @Override
     public Customer getCustomer() {
-        // todo: call CustomerService to get customer by id ?? and return it instead of the "fake customer" (just customer_id and nulls)
         return customer;
     }
 
     @Override
     public void setCustomer(Customer customer) {
-        // todo: call CustomerService update/patch to get patch/update customer by id ?? and return it instead of the "fake customer" (just customer_id and nulls)
         this.customer = customer;
     }
     @Override
@@ -103,7 +100,7 @@ public class Reading implements IReading {
 
     @Override
     public UUID getId() {
-        return null;
+        return id;
     }
 
     @Override

@@ -44,8 +44,8 @@ public class Customer implements com.example.demo.interfaces.ICustomer {
     }
 
     @Override
-    public void setId(UUID uuid) {
-        this.id = uuid;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     @Override

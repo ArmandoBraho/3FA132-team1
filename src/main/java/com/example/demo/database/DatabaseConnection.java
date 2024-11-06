@@ -18,6 +18,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     @Override
     public IDatabaseConnection openConnection(Properties properties) {
         try {
+            //todo: desired solution with singelton
             String url = properties.getProperty("db.url");
             String user = properties.getProperty("db.user");
             String password = properties.getProperty("db.password");
@@ -73,12 +74,12 @@ public class DatabaseConnection implements IDatabaseConnection {
     public void truncateAllTables() {
         String disableForeignKeyChecks = "SET FOREIGN_KEY_CHECKS = 0";
         String enableForeignKeyChecks = "SET FOREIGN_KEY_CHECKS = 1";
-        String setCustomerUuidToNull = "UPDATE readings SET customer_uuid = NULL";
+        String setCustomerIdToNull = "UPDATE readings SET customer_id = NULL";
         String truncateCustomersTableSQL = "TRUNCATE TABLE customers";
         String truncateReadingsTableSQL = "TRUNCATE TABLE readings";
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(disableForeignKeyChecks);
-            stmt.execute(setCustomerUuidToNull);
+            stmt.execute(setCustomerIdToNull);
             stmt.execute(truncateCustomersTableSQL);
             stmt.execute(enableForeignKeyChecks);
             stmt.execute(truncateReadingsTableSQL);
