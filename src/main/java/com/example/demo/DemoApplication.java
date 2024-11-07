@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.database.DatabaseInitialization;
+<<<<<<< HEAD
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -8,9 +9,14 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+=======
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+>>>>>>> 8a6db073a6c5a9382efe761f88ceb9e4e2f61f2f
 
 public class DemoApplication {
 
+<<<<<<< HEAD
 	static DatabaseInitialization databaseInitialization = new DatabaseInitialization();
 
 	public static void main(String[] args) {
@@ -20,6 +26,14 @@ public class DemoApplication {
 		startHttpServer();
 
 		System.out.println("Server running...");
+=======
+	// should be static to get used inside static context?
+	static DatabaseInitialization databaseInitialization = new DatabaseInitialization();
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+
+		databaseInitialization.initialize();
+>>>>>>> 8a6db073a6c5a9382efe761f88ceb9e4e2f61f2f
 	}
 
 	private static void startHttpServer() {
