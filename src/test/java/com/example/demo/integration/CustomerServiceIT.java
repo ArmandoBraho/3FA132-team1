@@ -14,16 +14,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CustomerServiceIT {
 
-    //    RIPRENDI DA HERE i GUEES     the test should be mostly combined like you create and then make a get by id or get all customers......
-//    RIPRENDI DA HERE i GUEES     the test should be mostly combined like you create and then make a get by id or get all customers......
-//    RIPRENDI DA HERE i GUEES     the test should be mostly combined like you create and then make a get by id or get all customers......
-//    RIPRENDI DA HERE i GUEES     the test should be mostly combined like you create and then make a get by id or get all customers......
     private DatabaseConnection databaseConnection;
     private CustomerService customerService;
     Properties properties = new Properties();
@@ -41,9 +36,9 @@ public class CustomerServiceIT {
         }
 
 
-        // todo: should I change the method createCustomer so that it returns the created customer and then I can just test it without also testing the getter
         databaseConnection = new DatabaseConnection();
         databaseConnection.openConnection(properties);
+
         customerService = new CustomerService(databaseConnection);
 
         // Initialize the database schema
@@ -53,6 +48,8 @@ public class CustomerServiceIT {
 
     @BeforeEach
     public void resetDatabaseToDefaultValues() {
+        // just in case the customers properties where modified in the other tests
+        databaseConnection.openConnection(properties);
         customerService.deleteCustomer(UUID.fromString("00000000-0000-0000-0000-000000000000"));
         databaseConnection.openConnection(properties);
         customerService.deleteCustomer(UUID.fromString("11111111-1111-1111-1111-111111111111"));
@@ -60,7 +57,6 @@ public class CustomerServiceIT {
         Customer customer1 = new Customer(UUID.fromString("00000000-0000-0000-0000-000000000000"), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
         Customer customer2 = new Customer(UUID.fromString("11111111-1111-1111-1111-111111111111"), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
 
-        databaseConnection.openConnection(properties);
         databaseConnection.openConnection(properties);
         customerService.createCustomer(customer1);
         databaseConnection.openConnection(properties);
@@ -72,23 +68,7 @@ public class CustomerServiceIT {
     public void tearDown() {
         databaseConnection.openConnection(properties);
         databaseConnection.removeAllTables();
-//        databaseConnection.closeConnection();
-    }
-
-    // todo: is this test necessary??
-    @Test
-    public void createCustomer() {
-        Customer customer = new Customer(UUID.randomUUID(), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
-
-        // todo: should I change the method createCustomer so that it returns the created customer and then I can just test it without also testing the getter
-        Customer createdCustomer = customerService.createCustomer(customer);
-
-        assertNotNull(createdCustomer);
-        assertEquals(createdCustomer.getId(), customer.getId());
-        assertEquals(createdCustomer.getGender(), customer.getGender());
-        assertEquals(createdCustomer.getFirstName(), customer.getFirstName());
-        assertEquals(createdCustomer.getLastName(), customer.getLastName());
-        assertEquals(createdCustomer.getBirthDate(), customer.getBirthDate());
+        databaseConnection.closeConnection();
     }
 
     @Test
@@ -99,8 +79,8 @@ public class CustomerServiceIT {
         assertNotNull(fetchedCustomer);
         assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000000"), fetchedCustomer.getId());
         assertEquals("Ada", fetchedCustomer.getFirstName());
-        assertEquals(ICustomer.Gender.D, fetchedCustomer.getGender());
         assertEquals("Lovelace", fetchedCustomer.getLastName());
+        assertEquals(ICustomer.Gender.D, fetchedCustomer.getGender());
         assertEquals(LocalDate.of(1815, 12, 10), fetchedCustomer.getBirthDate());
     }
 
@@ -112,21 +92,41 @@ public class CustomerServiceIT {
         assertNotNull(fetchedCustomers);
         for (Customer customer : fetchedCustomers) {
             if (customer.getId().equals(UUID.fromString("00000000-0000-0000-0000-000000000000"))) {
+                // todo: duplicate code x3
                 assertEquals("Ada", customer.getFirstName());
-                //todo: the other fields.....
+                assertEquals("Lovelace", customer.getLastName());
+                assertEquals(ICustomer.Gender.D, customer.getGender());
+                assertEquals(LocalDate.of(1815, 12, 10), customer.getBirthDate());
             }
             if (customer.getId().equals(UUID.fromString("11111111-1111-1111-1111-111111111111"))) {
+                assertEquals("Ada", customer.getFirstName());
                 assertEquals("Lovelace", customer.getLastName());
-                //todo: the other fields.....
+                assertEquals(ICustomer.Gender.D, customer.getGender());
+                assertEquals(LocalDate.of(1815, 12, 10), customer.getBirthDate());
             }
         }
+    }
+
+    @Test
+    public void createCustomer() {
+        Customer customer = new Customer(UUID.randomUUID(), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
+
+        databaseConnection.openConnection(properties);
+        Customer createdCustomer = customerService.createCustomer(customer);
+
+        assertNotNull(createdCustomer);
+        assertEquals(createdCustomer.getId(), customer.getId());
+        assertEquals(createdCustomer.getGender(), customer.getGender());
+        assertEquals(createdCustomer.getFirstName(), customer.getFirstName());
+        assertEquals(createdCustomer.getLastName(), customer.getLastName());
+        assertEquals(createdCustomer.getBirthDate(), customer.getBirthDate());
     }
 
     @Test
     public void createAndGetCustomer() {
         Customer customer = new Customer(UUID.randomUUID(), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
 
-        // todo: should I change the method createCustomer so that it returns the created customer and then I can just test it without also testing the getter
+        databaseConnection.openConnection(properties);
         Customer createdCustomer = customerService.createCustomer(customer);
         databaseConnection.openConnection(properties);
         Customer fetchedCustomer = customerService.getCustomerById(customer.getId());
@@ -140,20 +140,19 @@ public class CustomerServiceIT {
     }
 
     @Test
-    public void createManyCustomersAndGetThemCustomer() {
+    public void createManyCustomersAndGetAllCustomer() {
         Customer customer1 = new Customer(UUID.randomUUID(), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
         Customer customer2 = new Customer(UUID.randomUUID(), ICustomer.Gender.D, "Konrad", "Zuse", LocalDate.of(1910, 6, 22));
 
-        // todo: should I change the method createCustomer so that it returns the created customer and then I can just test it without also testing the getter
-        databaseConnection.truncateAllTables();
+        databaseConnection.openConnection(properties);
         Customer createdCustomer1 = customerService.createCustomer(customer1);
+        databaseConnection.openConnection(properties);
         Customer createdCustomer2 = customerService.createCustomer(customer2);
         databaseConnection.openConnection(properties);
         List<Customer> fetchedCustomers = customerService.getAllCustomers();
 
         assertNotNull(fetchedCustomers);
         assert (fetchedCustomers.size() >= 2);
-        //todo: ask if we can use softassertion library
         for (Customer customer : fetchedCustomers) {
             if (customer.getId().equals(customer1.getId())) {
                 assertEquals(createdCustomer1.getId(), customer.getId());
@@ -174,27 +173,30 @@ public class CustomerServiceIT {
 
     @Test
     public void updateCustomer() {
+        databaseConnection.openConnection(properties);
         List<Customer> customers = customerService.getAllCustomers();
-        Customer customer = customers.get(0);
+        Customer customer = customers.getFirst();
         customer.setFirstName("SponGebob");
 
+        databaseConnection.openConnection(properties);
         customerService.updateCustomer(customer);
 
+        databaseConnection.openConnection(properties);
         Customer updatedCustomer = customerService.getCustomerById(customer.getId());
         assertEquals("SponGebob", updatedCustomer.getFirstName());
     }
 
     @Test
     public void deleteCustomer() {
-        //todo: does this make sense?? we always suppose there is at least a customer in our table---> maybe improve set up and clean it up after the test ----> something like after and before each test create
+        databaseConnection.openConnection(properties);
         List<Customer> customers = customerService.getAllCustomers();
-        Customer customer = customers.get(0);
+        Customer customer = customers.getFirst();
 
+        databaseConnection.openConnection(properties);
         customerService.deleteCustomer(customer.getId());
 
+        databaseConnection.openConnection(properties);
         Customer customerAfterDeletion = customerService.getCustomerById(customer.getId());
-        assertEquals(null, customerAfterDeletion);
+        assertNull(customerAfterDeletion);
     }
-
-
 }
