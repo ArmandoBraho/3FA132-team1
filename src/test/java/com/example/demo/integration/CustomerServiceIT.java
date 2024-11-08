@@ -1,11 +1,5 @@
 package com.example.demo.integration;
 
-import com.example.demo.database.DatabaseConnection;
-import com.example.demo.interfaces.ICustomer;
-import com.example.demo.models.Customer;
-import com.example.demo.service.CustomerService;
-import org.junit.jupiter.api.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +8,20 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
+import com.example.demo.database.DatabaseConnection;
+import com.example.demo.interfaces.ICustomer;
+import com.example.demo.models.Customer;
+import com.example.demo.service.CustomerService;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CustomerServiceIT {
@@ -198,5 +205,42 @@ public class CustomerServiceIT {
         databaseConnection.openConnection(properties);
         Customer customerAfterDeletion = customerService.getCustomerById(customer.getId());
         assertNull(customerAfterDeletion);
+
     }
+
+
+    @Test
+    public void invalidCustomerID() {
+        // Create a customer with an invalid UUID
+        Customer invalidCustomer = new Customer(UUID.fromString("b624289d-fdfe-4cbb-9a06-f9bc24039538"), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
+        databaseConnection.openConnection(properties);
+        customerService.createCustomer(invalidCustomer);
+        databaseConnection.openConnection(properties);
+        Assertions.assertThrows(RuntimeException.class, () -> { customerService.createCustomer(invalidCustomer);
+    });
+}
+    
+    
+    
+ /*    @Test
+    public void duplicatedId() {
+        // Create a customer with an existing ID
+        Customer existingCustomer = customerService.getCustomerById(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+        Customer duplicateCustomer = new Customer(existingCustomer.getId(), ICustomer.Gender.D, "New", "Customer", LocalDate.now());
+    
+        // Assert that createCustomer throws a SQLException for duplicate key
+        Assertions.assertThrows(RuntimeException.class, () -> { customerService.createCustomer(duplicateCustomer);
+        }); 
+    } */
+    
+   /*  @Test
+    public void customerNotFound() {
+        // Try to update a customer that doesn't exist
+        UUID nonExistentCustomerId = UUID.randomUUID();
+        Customer customerToUpdate = new Customer(UUID.fromString("cee2f8c5-11a4-4631-8f33-b13857a509ea"), ICustomer.Gender.D, "New", "Customer", LocalDate.now());
+    
+        // Assert that updateCustomer throws an SQLException
+        assertThrows(SQLException.class, () -> customerService.updateCustomer(customerToUpdate));
+    }
+    */
 }
