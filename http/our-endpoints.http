@@ -1,2 +1,2 @@
-### GET database connection
-GET localhost:8080/test-database
+### GET readings
+GET http://localhost:8080/readings
