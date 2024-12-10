@@ -1,0 +1,22 @@
+# create db gm[1..x], user test - kein PW
+
+USE mysql;
+
+DROP DATABASE IF EXISTS gm1;
+CREATE DATABASE gm1 CHARACTER SET utf8;
+
+DROP DATABASE IF EXISTS gm2;
+CREATE DATABASE gm2 CHARACTER SET utf8;
+
+DROP DATABASE IF EXISTS gm3;
+CREATE DATABASE gm3 CHARACTER SET utf8;
+
+DROP USER IF EXISTS 'test'@'localhost';
+CREATE USER 'test'@'localhost' IDENTIFIED BY '';
+
+GRANT ALL PRIVILEGES ON gm1.* TO 'test'@'localhost';
+GRANT ALL PRIVILEGES ON gm2.* TO 'test'@'localhost';
+GRANT ALL PRIVILEGES ON gm3.* TO 'test'@'localhost';
+
+FLUSH PRIVILEGES;
+  
