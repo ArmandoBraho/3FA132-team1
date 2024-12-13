@@ -2,13 +2,11 @@ package com.example.demo;
 
 import com.example.demo.database.DatabaseConnection;
 import com.example.demo.database.DatabaseInitialization;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
+import java.net.URI;
 
 public class DemoApplication {
     private static final DatabaseConnection databaseConnection = DatabaseConnection.openConnection();
@@ -18,33 +16,16 @@ public class DemoApplication {
         System.out.println("Starting application...");
 
         databaseInitialization.initialize();
-        startHttpServer();
 
+        final String pack = "com.example.demo.controller";
+        String url = "http://localhost:8080/rest";
+        System.out.println("Start server");
+        System.out.println(url);
+        //final ResourceConfig rc = new ResourceConfig().packages(pack).register(AuthenticationFilter.class);
+        final ResourceConfig rc = new ResourceConfig().packages(pack);
+        final HttpServer server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
+        System.out.println("Ready for Requests....");
 
         System.out.println("Server running...");
-    }
-
-    private static void startHttpServer() {
-        try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-            server.createContext("/", new MyHandler());
-            server.setExecutor(null); // creates a default executor
-            server.start();
-            System.out.println("Server started on port 8080");
-        } catch (IOException e) {
-            throw new RuntimeException("Error starting HTTP server", e);
-        }
-    }
-
-    static class MyHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
-            String response = "Hello, World!";
-            t.sendResponseHeaders(200, response.length());
-            OutputStream os = t.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-            System.out.println("Response sent for 8080 call.");
-        }
     }
 }
