@@ -10,6 +10,9 @@ public class Customer implements com.example.demo.interfaces.ICustomer {
     private String lastName;
     private LocalDate birthDate;
 
+    // Required for Jackson deserialization in createCustomer endpoint
+    public Customer() {}
+
     public Customer(UUID id, Gender gender, String firstName, String lastName, LocalDate birthDate) {
         this.id = id;
         this.gender = gender;

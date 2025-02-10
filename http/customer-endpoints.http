@@ -1,0 +1,34 @@
+### GET all customers
+GET http://localhost:8080/rest/customers
+
+### GET customer by id (id of customer Cindy)
+GET http://localhost:8080/rest/customers/8670e527-3f5e-44cc-ae61-fba80268bd7f
+
+### DELETE customer by id (id of customer Cindy)
+DELETE http://localhost:8080/rest/customers/8670e527-3f5e-44cc-ae61-fba80268bd7f
+
+### POST a customer
+POST http://localhost:8080/rest/customers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Vera",
+  "lastName": "Veeera",
+  "gender": "W"
+}
+
+### PUT a customer (from Cindy to Vera)
+PUT http://localhost:8080/rest/customers
+Content-Type: application/json
+Accept: text/plain
+
+{
+  "id": "8670e527-3f5e-44cc-ae61-fba80268bd7f",
+  "firstName": "Vera",
+  "lastName": "Gerhardt",
+  "gender": "W"
+}
+
+
+

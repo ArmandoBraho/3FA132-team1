@@ -93,6 +93,73 @@
 			<artifactId>jersey-client</artifactId>
 			<version>3.0.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.15.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.15.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.15.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>4.0.0-M2</version>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>org.glassfish.jersey.test-framework</groupId>-->
+<!--			<artifactId>jersey-test-framework-core</artifactId>-->
+<!--			<version>4.0.0-M2</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.glassfish.jersey.test-framework.providers</groupId>-->
+<!--			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>-->
+<!--			<version>4.0.0-M2</version>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.glassfish.jersey.test-framework.providers</groupId>-->
+<!--			<artifactId>jersey-test-framework-provider-inmemory</artifactId>-->
+<!--			<version>2.35</version>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.glassfish.jersey.core</groupId>-->
+<!--			<artifactId>jersey-server</artifactId>-->
+<!--			<version>2.35</version>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+
+
+
+
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework</groupId>
+			<artifactId>jersey-test-framework-core</artifactId>
+			<version>4.0.0-M2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<version>4.0.0-M2</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>

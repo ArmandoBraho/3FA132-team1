@@ -3,12 +3,13 @@ package com.example.demo;
 import com.example.demo.database.DatabaseConnection;
 import com.example.demo.database.DatabaseInitialization;
 import com.sun.net.httpserver.HttpServer;
+import jakarta.ws.rs.core.Application;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.net.URI;
 
-public class DemoApplication {
+public class DemoApplication extends Application {
     private static final DatabaseConnection databaseConnection = DatabaseConnection.openConnection();
     static DatabaseInitialization databaseInitialization = new DatabaseInitialization(databaseConnection.getConnection());
 

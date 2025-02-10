@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerServiceIT {
 
     private final DatabaseConnection databaseConnection = DatabaseConnection.openConnection();
-    private final CustomerService customerService = new CustomerService(databaseConnection);
+    private final CustomerService customerService = new CustomerService();
     Customer customer1 = new Customer(UUID.fromString("00000000-0000-0000-0000-000000000000"), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
     Customer customer2 = new Customer(UUID.fromString("11111111-1111-1111-1111-111111111111"), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
 

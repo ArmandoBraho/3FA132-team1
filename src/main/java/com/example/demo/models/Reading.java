@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import com.example.demo.interfaces.IReading;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -15,6 +16,9 @@ public class Reading implements IReading {
     private String comment;
     private KindOfMeter kindOfMeter;
     private Boolean substitute;
+
+    // Required for Jackson deserialization in createCustomer endpoint
+    public Reading() {}
 
     public Reading(Customer customer, UUID id, String meterId, LocalDate dateOfReading, Double meterCount, String comment, KindOfMeter kindOfMeter, Boolean substitute) {
         this.customer = customer;

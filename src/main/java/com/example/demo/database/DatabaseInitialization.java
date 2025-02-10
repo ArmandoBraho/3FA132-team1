@@ -102,7 +102,7 @@ public class DatabaseInitialization {
                 String[] values = line.split(";");
                 Reading reading = new Reading(
                         new Customer(UUID.fromString(values[0]), null, null, null, null), //customer
-                        UUID.fromString(values[0]),  // customer_id
+                        UUID.fromString(values[0]),  // id
                         values[1],  // meter_id
                         new Date(new SimpleDateFormat("dd.MM.yyyy").parse(values[2]).getTime()).toLocalDate(),  // date_of_reading
                         Double.valueOf(values[3].replace(",", ".")),  // meter_count

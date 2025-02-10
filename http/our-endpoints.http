@@ -1,2 +1,0 @@
-### GET readings
-GET http://localhost:8080/rest/hello

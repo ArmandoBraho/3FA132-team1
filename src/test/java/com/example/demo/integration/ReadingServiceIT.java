@@ -19,7 +19,7 @@ public class ReadingServiceIT {
 
     private final DatabaseConnection databaseConnection = DatabaseConnection.openConnection();
 
-    private final ReadingService readingService = new ReadingService(databaseConnection);
+    private final ReadingService readingService = new ReadingService();
 
 
     Customer customer1 = new Customer(UUID.fromString("00000000-0000-0000-0000-000000000000"), ICustomer.Gender.D, "Ada", "Lovelace", LocalDate.of(1815, 12, 10));
