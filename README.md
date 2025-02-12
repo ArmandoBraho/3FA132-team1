@@ -15,14 +15,15 @@ Datenbankverbindung
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-Offizielle Dokumentation vom Projekt "HausFix"
-Durchgeführt von Barbara, Denise, Armando und Dustin
+<h1>Offizielle Dokumentation vom Projekt "HausFix"</h1>
+<strong>Durchgeführt von Barbara, Denise, Armando und Dustin</strong>
 
 Durchführungszeitraum: 7.10.2024 - 23.05.2025
 
-Projektbeschreibung: Entwicklung einer Client-Server-Anwendung, die Ablesedaten für Strom, Heizung, Warmwasser und weitere Verbrauchsdaten pro Kunden effizient verwaltet.
+<h2>Projektbeschreibung:   </h2>
+Entwicklung einer Client-Server-Anwendung, die Ablesedaten für Strom, Heizung, Warmwasser und weitere Verbrauchsdaten pro Kunden effizient verwaltet.
 
-Projektschritte:
+<h2>Projektschritte:</h2>
 1. Einrichtung der Entwicklungsumgebung (Installierung der notwendigen Werkzeuge: OpenJDK 21, Eclipse EE 2024-06 oder Alternative, MariaDB 11.3, Maven 3.9, JUnit 5.10.3)
 1.1 Einrichten GIT (GitHub)
    
@@ -46,16 +47,20 @@ Projektschritte:
 5.1 Umsetzung einer Erweiterung: Userverwaltung mit Authentifizierung, Grafische Auswertung der Messdaten, Konsolenclient: Import & Export über REST Server, REST über XML mit XSD/DTD-Datei, …
 
 
-Projektziel:
-• Erfassen und Verwalten von Ablesedaten:
+<h2>Projektziel:</h2>
+• Erfassen und Verwalten von Ablesedaten:    
 Die Anwendung soll Ablesedaten für verschiedene Verbrauchszähler (Strom, Heizung, Warmwas-ser etc.) speichern und verwalten
-• Client-Server-Architektur:
+
+• Client-Server-Architektur:    
 Die Anwendung wird als Client-Server-System realisiert, wobei der Client Anfragen an den Server stellt und der Server diese bearbeitet und die entsprechenden Daten liefert oder speichert
-• Verwendung von REST:
+
+• Verwendung von REST:     
 Für die Kommunikation zwischen Client und Server wird das REST-Protokoll verwendet
-• Datenbankintegration: 
+
+• Datenbankintegration:    
 Die Daten werden in einer MariaDB-Datenbank gespeichert, auf die mittels JDBC zugegriffen wird
-• Testen mit JUnit:
+
+<br>• Testen mit JUnit:   
 Alle Funktionalitäten sollen mit JUnit-Tests überprüft werden, um eine hohe Softwarequalität sicherzustellen
 
 
