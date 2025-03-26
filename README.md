@@ -60,6 +60,21 @@ Für die Kommunikation zwischen Client und Server wird das REST-Protokoll verwen
 • Datenbankintegration:    
 Die Daten werden in einer MariaDB-Datenbank gespeichert, auf die mittels JDBC zugegriffen wird
 
+<h2>Projektumsetzung</h2>
+<h3>Entwicklungsumgebung</h3>
+Das Team hat sich für Visual Studio Code als Entwicklungsumgebung entschieden, sowie für die neuesten Versionen der anderen notwendigen Werkzeuge (siehe Projektschritte)
+
+<h3>GitHub</h3>
+In GitHub wurden kontinuierlich neue Tasks im Kanban-Board eingestellt und auf die Teammitglieder aufgeteilt. Es wurde ebenso gemeinsam an den Tasks gearbeitet. Damit war das Projektmanagement übersichtlich und effektiv gestaltet und hat die Arbeit für die Teammitglieder vereinfacht. 
+
+Die Vorgabe der Schule ist MariaDB als Datenbankmanagementsystem zu verwenden, dementsprechend wurde die neueste Version installiert und gestartet. 
+
+<h3>Datenbank</h3>
+Für die Erstellung der Tabellen Customer und Readings wurde eine Methode x geschrieben: 
+![image](https://github.com/user-attachments/assets/2e44ec0a-6e4e-430a-b6db-55183c68ab6a)
+
+
+
 <br>• Testen mit JUnit:   
 Alle Funktionalitäten sollen mit JUnit-Tests überprüft werden, um eine hohe Softwarequalität sicherzustellen
 
