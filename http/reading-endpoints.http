@@ -1,18 +1,17 @@
 ### GET all readings (just here fortemporary testing purposes) ---> delete afterwards
 GET http://localhost:8080/rest/readings/all
 
-### GET all readings
+### GET all readings for a certain customer
 GET http://localhost:8080/rest/readings/?customer=8670e527-3f5e-44cc-ae61-fba80268bd7f
 
-### GET all readings aaaaaaaaaaaa
-GET http://localhost:8080/rest/readings/?customer=8670e527-3f5e-44cc-ae61-fba80268bd7f&start=2024-07-07&end=2024-05-20&kindOfMeter=HEATING
-
+### GET all readings for a certain customer in a certain time period
+GET http://localhost:8080/rest/readings/?customer=8670e527-3f5e-44cc-ae61-fba80268bd7f&start=2010-07-07&end=2024-05-20&kindOfMeter=HEATING
 
 ### GET reading by id
-GET http://localhost:8080/rest/readings/7208b257-5db2-4204-b7a6-fa473a1650f5
+GET http://localhost:8080/rest/readings/ff2f148b-c7b2-49e0-984c-d2c5e30ba199
 
 ### DELETE reading by id
-DELETE http://localhost:8080/rest/readings/7208b257-5db2-4204-b7a6-fa473a1650f5
+DELETE http://localhost:8080/rest/readings/ff2f148b-c7b2-49e0-984c-d2c5e30ba199
 
 ### POST reading
 POST http://localhost:8080/rest/readings
@@ -51,6 +50,15 @@ Accept: text/plain
   "meterCount": 8.111,
   "kindOfMeter": "HEATING"
 }
+
+
+//riprendi da qui: put not mapping the id properly, maybe because of two nested objects?
+//riprendi da qui: put not mapping the id properly, maybe because of two nested objects?
+//riprendi da qui: put not mapping the id properly, maybe because of two nested objects?
+//riprendi da qui: put not mapping the id properly, maybe because of two nested objects?
+//riprendi da qui: put not mapping the id properly, maybe because of two nested objects?
+//riprendi da qui: put not mapping the id properly, maybe because of two nested objects?
+//set up tests kinda so la la
 ### PUT reading step by step
 PUT http://localhost:8080/rest/readings
 Content-Type: application/json
