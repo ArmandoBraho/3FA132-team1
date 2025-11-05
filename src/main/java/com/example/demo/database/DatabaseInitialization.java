@@ -56,7 +56,6 @@ public class DatabaseInitialization {
     }
 
     private void initializeReadingsTable(List<Reading> readings) {
-        //todo: is it better so??
 //        final String ELECTRICITY_READINGS_CSV_FILE_PATH = Thread.currentThread().getContextClassLoader().getResourceAsStream("database-csv-files/electricity.csv");
 
         final String ELECTRICITY_READINGS_CSV_FILE_PATH = "src/main/resources/database-csv-files/electricity.csv";
@@ -71,8 +70,6 @@ public class DatabaseInitialization {
     }
 
     public void extractCustomersInformationsFromCSVFile(List<Customer> customers) {
-        //todo: leo InputStream thing
-        //   pass etc. into separate folder
         final String CUSTOMERS_CSV_FILE_PATH = "src/main/resources/database-csv-files/customers.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMERS_CSV_FILE_PATH))) {

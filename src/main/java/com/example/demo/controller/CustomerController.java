@@ -66,9 +66,6 @@ public class CustomerController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    // thanks to @Valid it maps the id correctly in the updateCustomer endpoint, but why???
-    // thanks to @Valid it maps the id correctly in the updateCustomer endpoint, but why???
-    // thanks to @Valid it maps the id correctly in the updateCustomer endpoint, but why???
     public Response createCustomer(@Valid Customer customer) throws JsonProcessingException {
 
         CustomerValidation customerValidation = new CustomerValidation();

@@ -28,7 +28,6 @@ public class CustomerServiceIT {
     @BeforeEach
     public void resetDatabaseToDefaultValues() {
         databaseConnection.truncateAllTables();
-
         customerService.createCustomer(customer1);
         customerService.createCustomer(customer2);
     }
@@ -37,7 +36,6 @@ public class CustomerServiceIT {
     @AfterAll
     public void tearDown() {
         databaseConnection.removeAllTables();
-//        databaseConnection.closeConnection();
     }
 
     @Test

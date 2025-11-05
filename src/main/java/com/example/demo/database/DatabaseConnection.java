@@ -15,18 +15,10 @@ public class DatabaseConnection implements IDatabaseConnection {
     private DatabaseConnection() {
         // Initialize the database connection
         try {
-            Properties properties = new Properties();
-            try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-                if (input == null) {
-                    throw new FileNotFoundException("application.properties file not found");
-                }
-                properties.load(input);
-            } catch (IOException e) {
-                throw new RuntimeException("Error loading properties file", e);
-            }
-            String url = properties.getProperty("db.url");
-            String user = properties.getProperty("db.user");
-            String password = properties.getProperty("db.password");
+
+            String url = "jdbc:mariadb://localhost:3306/building_automation";
+            String user = "root";
+            String password = "123";
 
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
@@ -47,21 +39,6 @@ public class DatabaseConnection implements IDatabaseConnection {
         }
         return connection;
     }
-//
-//    @Override
-//    public IDatabaseConnection openConnection(Properties properties) {
-//        if (this.connection == null) {
-//            try {
-//                String url = properties.getProperty("db.url");
-//                String user = properties.getProperty("db.user");
-//                String password = properties.getProperty("db.password");
-//                this.connection = DriverManager.getConnection(url, user, password);
-//            } catch (SQLException e) {
-//                throw new RuntimeException("Error opening database connection", e);
-//            }
-//        }
-//        return this;
-//    }
 
     @Override
     public void closeConnection() {

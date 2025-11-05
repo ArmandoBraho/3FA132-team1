@@ -167,7 +167,6 @@ public class ReadingService {
         String insertReadingQuery = "INSERT INTO readings (id, customer_id, meter_id, date_of_reading, meter_count, comment, kind_of_meter, substitute) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String selectQuery = "SELECT * FROM readings WHERE id = ?";
         String readingId = reading.getId() == null ? UUID.randomUUID().toString() : reading.getId().toString();
-//        riprendi da debug this logic alallaalallalalal hiiiiiiiiiiiiiiiiiiii
         String customerId = Optional.ofNullable(reading.getCustomer())
                 .map(Customer::getId)
                 .map(Object::toString)

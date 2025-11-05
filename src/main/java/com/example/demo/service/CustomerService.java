@@ -80,7 +80,6 @@ public class CustomerService {
             pstmt.setString(3, customer.getLastName());
             pstmt.setDate(4, customer.getBirthDate() != null ? Date.valueOf(customer.getBirthDate()) : null);
             pstmt.setString(5, customerId);
-            //todo: better to return boolean or the whole customer?
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows == 0) {
@@ -91,42 +90,6 @@ public class CustomerService {
             throw new RuntimeException("Error updating customer", e);
         }
     }
-
-//    public Customer createCustomer(Customer customer) {
-//        String checkQuery = "SELECT 1 FROM customers WHERE id = ?";
-//        String insertQuery = "INSERT INTO customers (id, gender, first_name, last_name, birth_date) VALUES (?, ?, ?, ?, ?)";
-//        String customerId = customer.getId() == null ? UUID.randomUUID().toString() : customer.getId().toString();
-//        try (PreparedStatement checkStmt = this.connection.prepareStatement(checkQuery);
-//             PreparedStatement insertStmt = this.connection.prepareStatement(insertQuery)) {
-//
-//            // Check if the customer already exists
-//            checkStmt.setString(1, customerId);
-//            ResultSet rs = checkStmt.executeQuery();
-//
-//            if (rs.next()) {
-//                // Customer already exists, skip insertion or handle as needed
-//                System.out.println("The passed customer already exists, not creating anything since not necessary.");
-//                return customer;
-//            }
-//            // todo: correct it like this everywhere? does it still work like this?
-//            insertStmt.setString(1, customerId );
-//            insertStmt.setString(2, customer.getGender().toString());
-//            insertStmt.setString(3, customer.getFirstName());
-//            insertStmt.setString(4, customer.getLastName());
-//            insertStmt.setDate(5, customer.getBirthDate() != null ? Date.valueOf(customer.getBirthDate()) : null);
-//            int affectedRows = insertStmt.executeUpdate();
-//
-//            if (affectedRows == 0) {
-//                throw new SQLException("Creating customer failed, no rows affected.");
-//            }
-//            //todo: does this return make sense,itself it is not what was put in the database but just what was given to the method----
-//            //     jetzt dank affectedRows wissen wir that at least one row was affected. Anyway if no row affected should throw exception ---> so it inserts probably something....
-//            //     can I exclude it will be what I wanted? Or is this something I check in the test? but in the test it also just checks the creation ( alternative I check creation + get in the same test but then I do not have separation of concerns)
-//            return customer;
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error creating customer by id", e);
-//        }
-//    }
 
     public Customer createCustomer(Customer customer) {
         String checkQuery = "SELECT 1 FROM customers WHERE id = ?";
@@ -163,7 +126,6 @@ public class CustomerService {
             selectStmt.setString(1, customerId);
             ResultSet savedCustomerRs = selectStmt.executeQuery();
             if (savedCustomerRs.next()) {
-//                riprendi da qui, error at UUID reading/checking , check how we do in getCustomer service / endpoint
                 return new Customer(
                         UUID.fromString(savedCustomerRs.getString("id")),
                         ICustomer.Gender.valueOf(savedCustomerRs.getString("gender")),
@@ -178,6 +140,7 @@ public class CustomerService {
             throw new RuntimeException("Error creating or retrieving customer by id", e);
         }
     }
+
     public Customer deleteCustomer(UUID id) {
         String checkQuery = "SELECT * FROM customers WHERE id = ?";
         String deleteQuery = "DELETE FROM customers WHERE id = ?";

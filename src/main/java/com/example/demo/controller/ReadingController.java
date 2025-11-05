@@ -70,14 +70,10 @@ public class ReadingController {
             }
         }
 
-        //todo: can I directly pass LocalDate instead of a string?
-        // todo: check kindOfMeter is one of the desired values
-//        riprendi da debug kindofmeter
         List<Reading> readings = readingService.getFilteredReadings(customerUuid, start, end, kindOfMeter == null ? null : IReading.KindOfMeter.valueOf(kindOfMeter));
         return Response.ok().entity(readings).build();
     }
 
-    //todo: put into utils class??
     private LocalDate parseDate(String dateStr, String paramName) {
         if (dateStr == null) {
             return null;
@@ -137,9 +133,6 @@ public class ReadingController {
                 .build();
     }
 
-    //todo: check why it does not map!!
-    //todo: check why it does not map!!
-    //todo: check why it does not map!! --> maybe because it has a custom object?
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
